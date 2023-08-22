@@ -1,5 +1,5 @@
 import React from 'react';
-import TodoList from '../components/Button';
+import TodoList from '../components/TodoList';
 
 const HomePage = () => {
   return (
