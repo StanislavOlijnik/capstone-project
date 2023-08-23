@@ -6,13 +6,18 @@ function TodoList() {
 
   function addNewTodo() {
     if (newTodo.trim() !== '') {
-      setTodos([...todos, newTodo]);
+      
+      const todoItem = {
+        id: Date.now(), 
+        text: newTodo,
+      };
+      setTodos([...todos, todoItem]);
       setNewTodo('');
     }
   }
 
-  function removeTodo(index) {
-    const newTodos = todos.filter((_, i) => i !== index);
+  function removeTodo(id) {
+    const newTodos = todos.filter((todo) => todo.id !== id);
     setTodos(newTodos);
   }
 
@@ -22,20 +27,17 @@ function TodoList() {
       <input type="text" value={newTodo} onChange={(e) => setNewTodo(e.target.value)} />
       <button onClick={addNewTodo}>Add</button>
       <ul>
-        {todos.map((todo, index) => (
-          <li key={index}>
-            {todo}
-            <button onClick={() => removeTodo(index)}>Delete</button>
+        {todos.map((todo) => (
+          <li key={todo.id}>
+            {todo.text}
+            <button onClick={() => removeTodo(todo.id)}>Delete</button>
           </li>
         ))}
       </ul>
-       
-        <button onClick={() => setTodos([])}>Clear All</button>
-      
+
+      <button onClick={() => setTodos([])}>Clear All</button>
     </div>
   );
 }
 
 export default TodoList;
-
-
