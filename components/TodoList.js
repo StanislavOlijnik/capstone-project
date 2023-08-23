@@ -36,9 +36,18 @@ function TodoList() {
     const updatedTodos = todos.map((todo) =>
       todo.id === id ? { ...todo, text: editedTodoText } : todo
     );
+  
+  
+    if (editedTodoText.trim() === "") {
+      console.log();
+      
+      return;
+    }
+  
     setTodos(updatedTodos);
     setEditTodoId(null);
     setEditedTodoText('');
+  
   }
 
   return (
