@@ -8,7 +8,7 @@ function TodoList() {
     if (newTodo.trim() !== '') {
       
       const todoItem = {
-        id: Date.now(), 
+        id: Math.random().toString(32).substring(2),
         text: newTodo,
       };
       setTodos([...todos, todoItem]);
