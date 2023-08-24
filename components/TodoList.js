@@ -19,7 +19,6 @@ const TodoItem = styled.li`
 `;
 
 const TodoText = styled.span`
-  flex: 1;
 `;
 
 const TodoButton = styled.button`
@@ -33,12 +32,12 @@ function TodoList() {
   const [editedTodoText, setEditedTodoText] = useState('');
   const [priority, setPriority] = useState('medium');
 
-  const handleNewTodoChange = (e) => {
-    setNewTodo(e.target.value);
+  const handleNewTodoChange = (event) => {
+    setNewTodo(event.target.value);
   };
 
-  const handlePriorityChange = (e) => {
-    setPriority(e.target.value);
+  const handlePriorityChange = (event) => {
+    setPriority(event.target.value);
   };
 
   const handleTodoEditing = (id, text) => {
