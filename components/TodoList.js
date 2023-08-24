@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FlexContainer, FlexChild } from './StyledComponents';
 
-
 const TodoContainer = styled.div`
   flex: 1;
 `;
@@ -12,14 +11,19 @@ const PriorityTitle = styled.h3`
   margin-bottom: 8px;
 `;
 
+const HighPriorityTitle = styled(PriorityTitle)`
+  font-size: 18px;
+  margin-bottom: 8px;
+  padding-left: 10px; /* Ändere diesen Wert nach Bedarf */
+`;
+
 const TodoItem = styled.li`
   display: flex;
   align-items: center;
   margin-bottom: 4px;
 `;
 
-const TodoText = styled.span`
-`;
+const TodoText = styled.span``;
 
 const TodoButton = styled.button`
   margin-left: 8px;
@@ -33,7 +37,11 @@ function TodoList() {
   const [priority, setPriority] = useState('medium');
 
   const handleNewTodoChange = (event) => {
-    setNewTodo(event.target.value);
+    const inputText = event.target.value;
+  
+    if (inputText.split(' ').length <= 12 && inputText.length <= 20) {
+      setNewTodo(inputText);
+    }
   };
 
   const handlePriorityChange = (event) => {
@@ -77,8 +85,11 @@ function TodoList() {
   };
 
   const handleRemoveTodo = (id) => {
-    const newTodos = todos.filter((todo) => todo.id !== id);
-    setTodos(newTodos);
+    const confirmDelete = window.confirm('Are you sure you want to delete this task?');
+    if (confirmDelete) {
+      const newTodos = todos.filter((todo) => todo.id !== id);
+      setTodos(newTodos);
+    }
   };
 
   const priorityGroups = {
@@ -101,7 +112,11 @@ function TodoList() {
       <FlexContainer>
         {Object.keys(priorityGroups).map((priorityKey) => (
           <TodoContainer key={priorityKey}>
-            <PriorityTitle>{priorityKey} Priority</PriorityTitle>
+            {priorityKey === 'high' ? (
+              <HighPriorityTitle>{priorityKey} Priority</HighPriorityTitle>
+            ) : (
+              <PriorityTitle>{priorityKey} Priority</PriorityTitle>
+            )}
             <ul>
               {priorityGroups[priorityKey].map((todo) => (
                 <TodoItem key={todo.id}>
