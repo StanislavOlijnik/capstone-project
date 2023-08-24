@@ -11,3 +11,8 @@ export const FlexChild = styled.div`
   flex: 1;
   margin: 10px;
 `;
+
+function TodoList() {
+}
+
+export default TodoList;
