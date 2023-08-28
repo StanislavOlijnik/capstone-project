@@ -1,88 +1,22 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import {
+  CenteredContainer,
+  TodoContainer,
+  PriorityTitle,
+  HighPriorityTitle,
+  TodoItem,
+  TodoText,
+  ButtonContainer,
+  TodoButton,
+  DoneButton,
+  NotesButton,
+  Notes,
+  ClearAllButton,
+  AppTitle, 
+  TodoInput,
+  PrioritySelect,
+} from './styled-components';
 
-
-const CenteredContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #B0E0E6; 
-`;
-
-
-
-const TodoContainer = styled.div`
-  flex: 1;
-  margin: 10px;
-`;
-
-const PriorityTitle = styled.h3`
-  font-size: 18px;
-  margin-bottom: 8px;
-  text-align: center;
-`;
-
-const HighPriorityTitle = styled(PriorityTitle)`
-  font-size: 18px;
-  margin-bottom: 8px;
-  padding-left: 10px;
-`;
-
-const TodoItem = styled.li`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-bottom: 12px;
-  border-radius: 10px;
-  padding: 10px;
-  background-color: #fff;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-`;
-
-const TodoText = styled.span`
-  text-decoration: ${(props) => (props.completed ? 'line-through' : 'none')};
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  margin-top: 5px;
-`;
-
-const TodoButton = styled.button`
-  margin: 0 5px;
-  background-color: ${(props) =>
-    props.clear ? 'red' : props.add ? 'green' : props.edit ? 'orange' : 'transparent'};
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
-  border-radius: 5px;
-`;
-
-const DoneButton = styled.button`
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
-  border-radius: 5px;
-`;
-
-const NotesButton = styled.button`
-  background-color: gray;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
-  border-radius: 5px;
-`;
-
-const Notes = styled.p`
-  margin: 0;
-  font-size: 14px;
-  color: gray;
-`;
 
 function TodoList() {
   const [todos, setTodos] = useState([]);
@@ -162,7 +96,7 @@ function TodoList() {
   };
 
   const handleRemoveTodo = (id) => {
-    const confirmDelete = window.confirm('Are you sure you want to delete this task?');
+    const confirmDelete = window.confirm('Bist du sicher dass du es löschen möchtest ');
     if (confirmDelete) {
       const newTodos = todos.filter((todo) => todo.id !== id);
       setTodos(newTodos);
@@ -201,7 +135,6 @@ function TodoList() {
   return (
     <CenteredContainer>
       <div>
-        <h1 style={{ color: 'blue' }}>My To-Do App</h1>
         <input type="text" value={newTodo} onChange={handleNewTodoChange} />
         <select value={priority} onChange={handlePriorityChange}>
           <option value="high">High Priority</option>
@@ -209,7 +142,7 @@ function TodoList() {
           <option value="low">Low Priority</option>
         </select>
         <TodoButton add onClick={handleAddNewTodo}>Add</TodoButton>
-
+  
         {Object.keys(priorityGroups).map((priorityKey) => (
           <TodoContainer key={priorityKey}>
             {priorityKey === 'high' ? (
@@ -227,7 +160,7 @@ function TodoList() {
                       <input
                         type="text"
                         value={editedTodoText}
-                        onChange={(e) => setEditedTodoText(e.target.value)}
+                        onChange={(e) => setEditedTodoText(event.target.value)}
                         maxLength="12"
                       />
                       <ButtonContainer>
@@ -250,7 +183,7 @@ function TodoList() {
                         <TodoButton edit onClick={() => handleTodoEditing(todo.id, todo.text)}>
                           Edit
                         </TodoButton>
-                        <TodoButton onClick={() => handleAddNote(todo.id, prompt('Enter a note:'))}>
+                        <TodoButton onClick={() => handleAddNote(todo.id, prompt('Geben Sie eine Notiz ein:'))}>
                           <NotesButton>Notes</NotesButton>
                         </TodoButton>
                       </ButtonContainer>
@@ -262,20 +195,8 @@ function TodoList() {
             </ul>
           </TodoContainer>
         ))}
-
-        <button
-          style={{
-            backgroundColor: 'red',
-            color: 'white',
-            borderRadius: '5px',
-            padding: '5px 10px',
-            border: 'none',
-            cursor: 'pointer',
-          }}
-          onClick={() => setTodos([])}
-        >
-          Clear All
-        </button>
+  
+  <ClearAllButton onClick={() => setTodos([])}>Clear All</ClearAllButton>
       </div>
     </CenteredContainer>
   );
