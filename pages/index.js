@@ -11,7 +11,7 @@ const Title = styled.h1`
 const HomePage = () => {
   return (
     <div>
-      <Title>My To-Do App</Title>
+      <Title></Title>
       <TodoList />
     </div>
   );
