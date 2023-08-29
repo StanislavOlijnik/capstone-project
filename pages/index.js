@@ -1,19 +1,14 @@
 import React from 'react';
-import styled from 'styled-components'; 
+import styled from 'styled-components';
 import TodoList from '../components/TodoList';
-
-
-const Title = styled.h1`
-  font-size: 24px;
-  margin-bottom: 16px;
-`;
+import { CenteredContainer, AppTitle, ClearAllButton } from '../components/styled-components';
 
 const HomePage = () => {
   return (
-    <div>
-      <Title>My To-Do App</Title>
+    <CenteredContainer>
+      <AppTitle>My To-Do App</AppTitle>
       <TodoList />
-    </div>
+    </CenteredContainer>
   );
 };
 

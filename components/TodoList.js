@@ -1,39 +1,22 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
-import { FlexContainer } from './StyledComponents';
+import {
+  CenteredContainer,
+  TodoContainer,
+  PriorityTitle,
+  HighPriorityTitle,
+  TodoItem,
+  TodoText,
+  ButtonContainer,
+  TodoButton,
+  DoneButton,
+  NotesButton,
+  Notes,
+  ClearAllButton,
+  AppTitle, 
+  TodoInput,
+  PrioritySelect,
+} from './styled-components';
 
-const TodoContainer = styled.div`
-  flex: 1;
-`;
-
-const PriorityTitle = styled.h3`
-  font-size: 18px;
-  margin-bottom: 8px;
-`;
-
-const HighPriorityTitle = styled(PriorityTitle)`
-  font-size: 18px;
-  margin-bottom: 8px;
-  padding-left: 10px;
-`;
-
-const TodoItem = styled.li`
-  display: flex;
-  align-items: center;
-  margin-bottom: 4px;
-`;
-
-const TodoText = styled.span``;
-
-const TodoButton = styled.button`
-  margin-left: 8px;
-`;
-
-const Notes = styled.p`
-  margin: 0;
-  font-size: 14px;
-  color: gray;
-`;
 
 function TodoList() {
   const [todos, setTodos] = useState([]);
@@ -105,6 +88,7 @@ function TodoList() {
         id: Math.random().toString(32).substring(2),
         text: newTodo,
         priority: priority,
+        completed: false,
       };
       setTodos([...todos, todoItem]);
       setNewTodo('');
@@ -112,7 +96,7 @@ function TodoList() {
   };
 
   const handleRemoveTodo = (id) => {
-    const confirmDelete = window.confirm('Are you sure you want to delete this task?');
+    const confirmDelete = window.confirm('Bist du sicher dass du es löschen möchtest ');
     if (confirmDelete) {
       const newTodos = todos.filter((todo) => todo.id !== id);
       setTodos(newTodos);
@@ -120,14 +104,28 @@ function TodoList() {
   };
 
   const handleAddNote = (id, note) => {
-    const noteWords = note.split(' ');
+    if (note && note.trim() !== '') { 
+      const noteWords = note.split(' ');
+  
+      if (note && noteWords) {
+        if (noteWords.length <= 1 && note.length <= 12) {
+          const truncatedNote = noteWords.slice(0, 6).join(' ');
+          setNotes((prevNotes) => ({ ...prevNotes, [id]: truncatedNote }));
+        } else {
+          alert('Maximal 12 Zeichen sind für Notizen erlaubt.');
+        }
+      } else {
+        alert('Bitte geben Sie eine gültige Notiz ein.');
+      }
+    };
+  };
 
-    if (noteWords.length <= 1 && note.length <= 12) {
-      const truncatedNote = noteWords.slice(0, 6).join(' ');
-      setNotes((prevNotes) => ({ ...prevNotes, [id]: truncatedNote }));
-    } else {
-      alert('Maximal 12 Zeichen sind für Notizen erlaubt.');
-    }
+  const handleTaskCompletion = (taskId) => {
+    const updatedTodos = todos.map((todo) =>
+      todo.id === taskId ? { ...todo, completed: true } : todo
+    );
+
+    setTodos(updatedTodos);
   };
 
   const priorityGroups = {
@@ -137,23 +135,24 @@ function TodoList() {
   };
 
   return (
-    <div>
-      <h2>Tasks</h2>
-      <input type="text" value={newTodo} onChange={handleNewTodoChange} />
-      <select value={priority} onChange={handlePriorityChange}>
-        <option value="high">High Priority</option>
-        <option value="medium">Medium Priority</option>
-        <option value="low">Low Priority</option>
-      </select>
-      <button onClick={handleAddNewTodo}>Add</button>
-
-      <FlexContainer>
+    <CenteredContainer>
+      <div>
+        <input type="text" value={newTodo} onChange={handleNewTodoChange} />
+        <select value={priority} onChange={handlePriorityChange}>
+          <option value="high">High Priority</option>
+          <option value="medium">Medium Priority</option>
+          <option value="low">Low Priority</option>
+        </select>
+        <TodoButton add onClick={handleAddNewTodo}>Add</TodoButton>
+  
         {Object.keys(priorityGroups).map((priorityKey) => (
           <TodoContainer key={priorityKey}>
             {priorityKey === 'high' ? (
-              <HighPriorityTitle>{priorityKey} Priority</HighPriorityTitle>
+              <HighPriorityTitle style={{ color: 'red' }}>{priorityKey} Priority</HighPriorityTitle>
+            ) : priorityKey === 'medium' ? (
+              <PriorityTitle style={{ color: 'orange' }}>{priorityKey} Priority</PriorityTitle>
             ) : (
-              <PriorityTitle>{priorityKey} Priority</PriorityTitle>
+              <PriorityTitle style={{ color: 'green' }}>{priorityKey} Priority</PriorityTitle>
             )}
             <ul>
               {priorityGroups[priorityKey].map((todo) => (
@@ -163,24 +162,34 @@ function TodoList() {
                       <input
                         type="text"
                         value={editedTodoText}
-                        onChange={(e) => {
-                          if (e.target.value.length <= 12) {
-                            setEditedTodoText(e.target.value);
-                          }
-                        }}
+                        onChange={(event) => setEditedTodoText(event.target.value)}
+                        maxLength="12"
                       />
-                      <TodoButton onClick={() => handleTodoSaving(todo.id)}>Save</TodoButton>
-                      <TodoButton onClick={handleCancelEditing}>Cancel</TodoButton>
+                      <ButtonContainer>
+                        <TodoButton onClick={() => handleTodoSaving(todo.id)} add>
+                          OK
+                        </TodoButton>
+                        <TodoButton onClick={handleCancelEditing} clear>
+                          Cancel
+                        </TodoButton>
+                      </ButtonContainer>
                     </>
                   ) : (
                     <>
-                      <TodoText>{todo.text}</TodoText>
-                      <TodoButton onClick={() => handleRemoveTodo(todo.id)}>Delete</TodoButton>
-                      <TodoButton onClick={() => handleTodoEditing(todo.id, todo.text)}>Edit</TodoButton>
-                      <TodoButton onClick={() => handleAddNote(todo.id, prompt('Enter a note:'))}>Notes</TodoButton>
-                      {notes[todo.id] && (
-                        <Notes>Notes: {notes[todo.id]}</Notes>
-                      )}
+                      <TodoText completed={todo.completed}>{todo.text}</TodoText>
+                      <ButtonContainer>
+                        <DoneButton onClick={() => handleTaskCompletion(todo.id)}>Done</DoneButton>
+                        <TodoButton clear onClick={() => handleRemoveTodo(todo.id)}>
+                          Delete
+                        </TodoButton>
+                        <TodoButton edit onClick={() => handleTodoEditing(todo.id, todo.text)}>
+                          Edit
+                        </TodoButton>
+                        <TodoButton onClick={() => handleAddNote(todo.id, prompt('Geben Sie eine Notiz ein:'))}>
+                          <NotesButton>Notes</NotesButton>
+                        </TodoButton>
+                      </ButtonContainer>
+                      {notes[todo.id] && <Notes>Notes: {notes[todo.id]}</Notes>}
                     </>
                   )}
                 </TodoItem>
@@ -188,11 +197,13 @@ function TodoList() {
             </ul>
           </TodoContainer>
         ))}
-      </FlexContainer>
-
-      <button onClick={() => setTodos([])}>Clear All</button>
-    </div>
+  
+  <ClearAllButton onClick={() => setTodos([])}>Clear All</ClearAllButton>
+      </div>
+    </CenteredContainer>
   );
 }
 
-export default TodoList;
+export default function App() {
+  return <TodoList />;
+}
