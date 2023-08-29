@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-
 export const CenteredContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -20,10 +19,10 @@ export const AppTitle = styled.h1`
 export const TodoContainer = styled.div`
   flex: 1;
   margin: 10px;
-  max-height: calc(100vh - 150px); /* Set maximum height, subtracting other elements' heights */
-  overflow-y: auto; /* Add vertical scroll if needed */
-  position: sticky; /* Fix the position */
-  top: 0; /* Stick to the top */
+  max-height: calc(100vh - 150px); 
+  overflow-y: auto; 
+  position: sticky; 
+  top: 0; 
 `;
 
 export const PriorityTitle = styled.h3`

@@ -107,15 +107,17 @@ function TodoList() {
     if (note && note.trim() !== '') { 
       const noteWords = note.split(' ');
   
-      if (noteWords.length <= 1 && note.length <= 12) {
-        const truncatedNote = noteWords.slice(0, 6).join(' ');
-        setNotes((prevNotes) => ({ ...prevNotes, [id]: truncatedNote }));
+      if (note && noteWords) {
+        if (noteWords.length <= 1 && note.length <= 12) {
+          const truncatedNote = noteWords.slice(0, 6).join(' ');
+          setNotes((prevNotes) => ({ ...prevNotes, [id]: truncatedNote }));
+        } else {
+          alert('Maximal 12 Zeichen sind für Notizen erlaubt.');
+        }
       } else {
-        alert('Maximal 12 Zeichen sind für Notizen erlaubt.');
+        alert('Bitte geben Sie eine gültige Notiz ein.');
       }
-    } else {
-      alert('Bitte geben Sie eine gültige Notiz ein.');
-    }
+    };
   };
 
   const handleTaskCompletion = (taskId) => {
@@ -160,7 +162,7 @@ function TodoList() {
                       <input
                         type="text"
                         value={editedTodoText}
-                        onChange={(e) => setEditedTodoText(event.target.value)}
+                        onChange={(event) => setEditedTodoText(event.target.value)}
                         maxLength="12"
                       />
                       <ButtonContainer>
