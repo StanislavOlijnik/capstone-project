@@ -15,6 +15,7 @@ import {
   AppTitle, 
   TodoInput,
   PrioritySelect,
+  GlobalStyle,
 } from './styled-components';
 
 
@@ -25,6 +26,11 @@ function TodoList() {
   const [editedTodoText, setEditedTodoText] = useState('');
   const [priority, setPriority] = useState('medium');
   const [notes, setNotes] = useState({});
+  const [darkMode, setDarkMode] = useState(false);
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
 
   const handleNewTodoChange = (event) => {
     const inputText = event.target.value;
@@ -135,7 +141,8 @@ function TodoList() {
   };
 
   return (
-    <CenteredContainer>
+    <CenteredContainer >
+      
       <div>
         <input type="text" value={newTodo} onChange={handleNewTodoChange} />
         <select value={priority} onChange={handlePriorityChange}>
@@ -200,7 +207,7 @@ function TodoList() {
   
   <ClearAllButton onClick={() => setTodos([])}>Clear All</ClearAllButton>
       </div>
-    </CenteredContainer>
+        </CenteredContainer>
   );
 }
 
