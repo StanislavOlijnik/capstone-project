@@ -1,14 +1,20 @@
 import styled from 'styled-components';
+
+
 export const CenteredContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  max-height: 100vh; 
-  overflow-y: auto; 
-  background-color: #B0E0E6;
+  max-height: 100vh;
+  overflow-y: auto;
+  background-color: ${(props) => (props.darkMode ? '#333' : '#B0E0E6')};
+  transition: background-color 0.3s ease; /* Smooth transition effect */
 `;
+
+
+
 
 export const AppTitle = styled.h1`
   font-size: 24px;

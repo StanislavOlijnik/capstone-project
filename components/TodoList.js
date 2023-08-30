@@ -25,6 +25,11 @@ function TodoList() {
   const [editedTodoText, setEditedTodoText] = useState('');
   const [priority, setPriority] = useState('medium');
   const [notes, setNotes] = useState({});
+  const [darkMode, setDarkMode] = useState(false);
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
 
   const handleNewTodoChange = (event) => {
     const inputText = event.target.value;
@@ -135,7 +140,11 @@ function TodoList() {
   };
 
   return (
-    <CenteredContainer>
+    <CenteredContainer darkMode={darkMode}>
+      {/* Dark-Modus-Schalter */}
+      <button onClick={toggleDarkMode}>
+        {darkMode ? 'Light Mode' : 'Dark Mode'}
+      </button>
       <div>
         <input type="text" value={newTodo} onChange={handleNewTodoChange} />
         <select value={priority} onChange={handlePriorityChange}>
@@ -200,7 +209,7 @@ function TodoList() {
   
   <ClearAllButton onClick={() => setTodos([])}>Clear All</ClearAllButton>
       </div>
-    </CenteredContainer>
+        </CenteredContainer>
   );
 }
 
