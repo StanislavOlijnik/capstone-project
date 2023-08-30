@@ -1,5 +1,4 @@
-import styled from 'styled-components';
-
+import styled, { createGlobalStyle } from 'styled-components';
 
 export const CenteredContainer = styled.div`
   display: flex;
@@ -9,17 +8,22 @@ export const CenteredContainer = styled.div`
   height: 100vh;
   max-height: 100vh;
   overflow-y: auto;
-  background-color: ${(props) => (props.darkMode ? '#333' : '#B0E0E6')};
-  transition: background-color 0.3s ease; /* Smooth transition effect */
 `;
 
+
+export const GlobalStyle = createGlobalStyle`
+  body {
+    background-color: ${(props) => (props.darkMode ? '#333' : '#B0E0E6')};
+    transition: background-color 0.3s ease;
+  }
+`;
 
 
 
 export const AppTitle = styled.h1`
   font-size: 24px;
   margin-bottom: 16px;
-  color: blue;
+  color: ${(props) => (props.darkMode ? 'white' : 'blue')};
 `;
 
 export const TodoContainer = styled.div`

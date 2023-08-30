@@ -15,6 +15,7 @@ import {
   AppTitle, 
   TodoInput,
   PrioritySelect,
+  GlobalStyle,
 } from './styled-components';
 
 
@@ -140,11 +141,8 @@ function TodoList() {
   };
 
   return (
-    <CenteredContainer darkMode={darkMode}>
-      {/* Dark-Modus-Schalter */}
-      <button onClick={toggleDarkMode}>
-        {darkMode ? 'Light Mode' : 'Dark Mode'}
-      </button>
+    <CenteredContainer >
+      
       <div>
         <input type="text" value={newTodo} onChange={handleNewTodoChange} />
         <select value={priority} onChange={handlePriorityChange}>
