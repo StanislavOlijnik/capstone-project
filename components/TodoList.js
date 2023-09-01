@@ -12,12 +12,13 @@ import {
   NotesButton,
   Notes,
   ClearAllButton,
-  AppTitle, 
+  AppTitle,
   TodoInput,
   PrioritySelect,
   GlobalStyle,
 } from './styled-components';
-
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 function TodoList() {
   const [todos, setTodos] = useState([]);
@@ -27,6 +28,7 @@ function TodoList() {
   const [priority, setPriority] = useState('medium');
   const [notes, setNotes] = useState({});
   const [darkMode, setDarkMode] = useState(false);
+  const [selectedDueDate, setSelectedDueDate] = useState(null);
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
@@ -90,14 +92,20 @@ function TodoList() {
 
   const handleAddNewTodo = () => {
     if (newTodo.trim() !== '') {
-      const todoItem = {
-        id: Math.random().toString(32).substring(2),
-        text: newTodo,
-        priority: priority,
-        completed: false,
-      };
-      setTodos([...todos, todoItem]);
-      setNewTodo('');
+      if (selectedDueDate) {
+        const todoItem = {
+          id: Math.random().toString(32).substring(2),
+          text: newTodo,
+          priority: priority,
+          dueDate: selectedDueDate,
+          completed: false,
+        };
+        setTodos([...todos, todoItem]);
+        setNewTodo('');
+        setSelectedDueDate(null);
+      } else {
+        alert('Bitte wählen Sie ein Fälligkeitsdatum aus.');
+      }
     }
   };
 
@@ -110,9 +118,9 @@ function TodoList() {
   };
 
   const handleAddNote = (id, note) => {
-    if (note && note.trim() !== '') { 
+    if (note && note.trim() !== '') {
       const noteWords = note.split(' ');
-  
+
       if (note && noteWords) {
         if (noteWords.length <= 1 && note.length <= 12) {
           const truncatedNote = noteWords.slice(0, 6).join(' ');
@@ -123,7 +131,7 @@ function TodoList() {
       } else {
         alert('Bitte geben Sie eine gültige Notiz ein.');
       }
-    };
+    }
   };
 
   const handleTaskCompletion = (taskId) => {
@@ -141,8 +149,7 @@ function TodoList() {
   };
 
   return (
-    <CenteredContainer >
-      
+    <CenteredContainer>
       <div>
         <input type="text" value={newTodo} onChange={handleNewTodoChange} />
         <select value={priority} onChange={handlePriorityChange}>
@@ -150,16 +157,31 @@ function TodoList() {
           <option value="medium">Medium Priority</option>
           <option value="low">Low Priority</option>
         </select>
-        <TodoButton add onClick={handleAddNewTodo}>Add</TodoButton>
-  
+        <DatePicker
+          selected={selectedDueDate}
+          onChange={(date) => setSelectedDueDate(date)}
+          minDate={new Date()} 
+          dateFormat="dd/MM/yyyy"
+          placeholderText="Due Date"
+        />
+        <TodoButton add onClick={handleAddNewTodo}>
+          Add
+        </TodoButton>
+
         {Object.keys(priorityGroups).map((priorityKey) => (
           <TodoContainer key={priorityKey}>
             {priorityKey === 'high' ? (
-              <HighPriorityTitle style={{ color: 'red' }}>{priorityKey} Priority</HighPriorityTitle>
+              <HighPriorityTitle style={{ color: 'red' }}>
+                {priorityKey} Priority
+              </HighPriorityTitle>
             ) : priorityKey === 'medium' ? (
-              <PriorityTitle style={{ color: 'orange' }}>{priorityKey} Priority</PriorityTitle>
+              <PriorityTitle style={{ color: 'orange' }}>
+                {priorityKey} Priority
+              </PriorityTitle>
             ) : (
-              <PriorityTitle style={{ color: 'green' }}>{priorityKey} Priority</PriorityTitle>
+              <PriorityTitle style={{ color: 'green' }}>
+                {priorityKey} Priority
+              </PriorityTitle>
             )}
             <ul>
               {priorityGroups[priorityKey].map((todo) => (
@@ -169,7 +191,9 @@ function TodoList() {
                       <input
                         type="text"
                         value={editedTodoText}
-                        onChange={(event) => setEditedTodoText(event.target.value)}
+                        onChange={(event) =>
+                          setEditedTodoText(event.target.value)
+                        }
                         maxLength="12"
                       />
                       <ButtonContainer>
@@ -184,15 +208,33 @@ function TodoList() {
                   ) : (
                     <>
                       <TodoText completed={todo.completed}>{todo.text}</TodoText>
+                      <p>Due Date: {todo.dueDate && todo.dueDate.toDateString()}</p> {/* Hier wird das Datum angezeigt */}
                       <ButtonContainer>
-                        <DoneButton onClick={() => handleTaskCompletion(todo.id)}>Done</DoneButton>
-                        <TodoButton clear onClick={() => handleRemoveTodo(todo.id)}>
+                        <DoneButton
+                          onClick={() => handleTaskCompletion(todo.id)}
+                        >
+                          Done
+                        </DoneButton>
+                        <TodoButton
+                          clear
+                          onClick={() => handleRemoveTodo(todo.id)}
+                        >
                           Delete
                         </TodoButton>
-                        <TodoButton edit onClick={() => handleTodoEditing(todo.id, todo.text)}>
+                        <TodoButton
+                          edit
+                          onClick={() => handleTodoEditing(todo.id, todo.text)}
+                        >
                           Edit
                         </TodoButton>
-                        <TodoButton onClick={() => handleAddNote(todo.id, prompt('Geben Sie eine Notiz ein:'))}>
+                        <TodoButton
+                          onClick={() =>
+                            handleAddNote(
+                              todo.id,
+                              prompt('Geben Sie eine Notiz ein:')
+                            )
+                          }
+                        >
                           <NotesButton>Notes</NotesButton>
                         </TodoButton>
                       </ButtonContainer>
@@ -204,10 +246,10 @@ function TodoList() {
             </ul>
           </TodoContainer>
         ))}
-  
-  <ClearAllButton onClick={() => setTodos([])}>Clear All</ClearAllButton>
+
+        <ClearAllButton onClick={() => setTodos([])}>Clear All</ClearAllButton>
       </div>
-        </CenteredContainer>
+    </CenteredContainer>
   );
 }
 
