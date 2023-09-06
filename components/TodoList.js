@@ -30,6 +30,19 @@ function TodoList() {
   const [darkMode, setDarkMode] = useState(false);
   const [selectedDueDate, setSelectedDueDate] = useState(null);
 
+  function calculateProgress(todos) {
+    if (todos.length === 0) {
+      return 0; 
+    }
+  
+    const completedTasks = todos.filter((todo) => todo.completed);
+    const progressPercentage = (completedTasks.length / todos.length) * 100;
+  
+    return progressPercentage.toFixed(2); 
+  }
+
+
+
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
   };
@@ -208,7 +221,7 @@ function TodoList() {
                   ) : (
                     <>
                       <TodoText completed={todo.completed}>{todo.text}</TodoText>
-                      <p>Due Date: {todo.dueDate && todo.dueDate.toDateString()}</p> {/* Hier wird das Datum angezeigt */}
+                      <p>Due Date: {todo.dueDate && todo.dueDate.toDateString()}</p> {}
                       <ButtonContainer>
                         <DoneButton
                           onClick={() => handleTaskCompletion(todo.id)}
@@ -249,7 +262,9 @@ function TodoList() {
 
         <ClearAllButton onClick={() => setTodos([])}>Clear All</ClearAllButton>
       </div>
+      <p>Progress: {calculateProgress(todos)}%</p>
     </CenteredContainer>
+     
   );
 }
 
