@@ -1,5 +1,6 @@
 import styled, { createGlobalStyle } from 'styled-components';
 
+
 export const CenteredContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -11,6 +12,14 @@ export const CenteredContainer = styled.div`
 `;
 
 
+export const Progress = styled.p`
+  font-size: 40px; /* Ändere die Schriftgröße hier */
+  font-weight: bold; /* Ändere das Schriftgewicht hier */
+  margin-top: 10px; /* Hinzugefügter Abstand oben */
+`;
+
+
+
 export const GlobalStyle = createGlobalStyle`
   body {
     background-color: ${(props) => (props.darkMode ? '#333' : '#B0E0E6')};
@@ -18,20 +27,19 @@ export const GlobalStyle = createGlobalStyle`
   }
 `;
 
-
-
 export const AppTitle = styled.h1`
   font-size: 24px;
-  margin-bottom: 16px;
+  margin: 0; /* Abstand auf 0 setzen */
   color: ${(props) => (props.darkMode ? 'white' : 'blue')};
 `;
 
+
 export const TodoContainer = styled.div`
   flex: 1;
-  margin: 10px;
+  margin: 0; 
   max-height: calc(100vh - 150px); 
-  overflow-y: auto; 
-  position: sticky; 
+  overflow-y: auto;
+  position: static; 
   top: 0; 
 `;
 
@@ -51,14 +59,16 @@ export const TodoItem = styled.li`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-bottom: 12px;
+  margin-bottom: 4px;
   border-radius: 10px;
-  padding: 10px;
+  padding: 4px;
   background-color: #fff;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
+
 export const TodoText = styled.span`
+  font-size: 16px;
   text-decoration: ${(props) => (props.completed ? 'line-through' : 'none')};
 `;
 
@@ -73,7 +83,7 @@ export const TodoButton = styled.button`
     props.clear ? 'red' : props.add ? 'green' : props.edit ? 'orange' : 'transparent'};
   color: white;
   border: none;
-  padding: 5px 10px;
+  padding: 2px 4px; /* Ändere die Button-Größe hier */
   cursor: pointer;
   border-radius: 5px;
 `;
@@ -82,7 +92,7 @@ export const DoneButton = styled.button`
   background-color: #4caf50;
   color: white;
   border: none;
-  padding: 5px 10px;
+  padding: 2px 4px; /* Ändere die Button-Größe hier */
   cursor: pointer;
   border-radius: 5px;
 `;
@@ -91,7 +101,7 @@ export const NotesButton = styled.button`
   background-color: gray;
   color: white;
   border: none;
-  padding: 5px 10px;
+  padding: 2px 4px; /* Ändere die Button-Größe hier */
   cursor: pointer;
   border-radius: 5px;
 `;
@@ -105,7 +115,7 @@ export const ClearAllButton = styled.button`
   background-color: red;
   color: white;
   border-radius: 5px;
-  padding: 5px 10px;
+  padding: 2px 4px; /* Ändere die Button-Größe hier */
   border: none;
   cursor: pointer;
 `;
